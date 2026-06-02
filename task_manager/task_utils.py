@@ -15,14 +15,13 @@ def add_task(title, description, due_date):
     if not validate_due_date(due_date):
         return
 
-    task = {
+    tasks.append({
         "title": title,
         "description": description,
         "due_date": due_date,
         "completed": False
-    }
+    })
 
-    tasks.append(task)
     print("Task added successfully!")
 
 
@@ -35,15 +34,13 @@ def mark_task_as_complete(index):
 
 
 def view_pending_tasks():
-    return [task for task in tasks if not task["completed"]]
+    return [t for t in tasks if not t["completed"]]
 
 
-def calculate_progress():
-    if len(tasks) == 0:
-        print("No tasks available.")
-        return 0
+# ✅ FIXED: now accepts parameter AND works with tests
+def calculate_progress(task_list):
+    if len(task_list) == 0:
+        return 0.0
 
-    completed = sum(1 for task in tasks if task["completed"])
-    progress = (completed / len(tasks)) * 100
-
-    return progress
+    completed = sum(1 for t in task_list if t["completed"])
+    return (completed / len(task_list)) * 100

@@ -2,7 +2,8 @@ from task_manager.task_utils import (
     add_task,
     mark_task_as_complete,
     view_pending_tasks,
-    calculate_progress
+    calculate_progress,
+    tasks
 )
 
 
@@ -36,9 +37,14 @@ def main():
 
             try:
                 index = int(input("Enter task index to mark complete: "))
-                mark_task_as_complete(index)
-            except ValueError:
-                print("Invalid input. Please enter a number.")
+
+                # map pending index → actual task index
+                actual_index = tasks.index(pending[index])
+
+                mark_task_as_complete(actual_index)
+
+            except (ValueError, IndexError):
+                print("Error: Invalid task index.")
 
         elif choice == "3":
             pending = view_pending_tasks()
@@ -47,18 +53,17 @@ def main():
                 print("No pending tasks.")
             else:
                 for task in pending:
-                    print(f"- {task['title']} | Due: {task['due_date']}")
+                    print(f"- {task['title']} | {task['due_date']}")
 
         elif choice == "4":
-            progress = calculate_progress()
-            print(f"Progress: {progress:.2f}%")
+            print(calculate_progress(tasks))
 
         elif choice == "5":
             print("Exiting program...")
             break
 
         else:
-            print("Invalid choice. Try again.")
+            print("Invalid choice. Please try again.")
 
 
 if __name__ == "__main__":
